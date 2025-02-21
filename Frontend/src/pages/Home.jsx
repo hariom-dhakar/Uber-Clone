@@ -9,8 +9,9 @@ import ConfirmedVehicle from "../components/ConfirmedVehicle";
 import LookingForDriver from "../components/LookingForDriver";
 import WaitingForDriver from "../components/WaitingForDriver";
 import { useContext } from "react";
-import { UserDataContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
+import { SocketContext } from "../context/SocketContext";
+import { UserDataContext } from "../context/UserContext";
 
 function Home() {
   const [pickup, setPickup] = useState("");
@@ -36,8 +37,14 @@ function Home() {
   const [vehicleType, setVehicleType] = useState(null);
   const [ride, setRide] = useState(null);
 
-  const navigate = useNavigate();
+  const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
+
+  const navigate = useNavigate();
+  console.log(user);
+  useEffect(() => {
+    socket.emit("join", { userType: "user", userId: user._id });
+  }, [user]);
 
   const handlePickupChange = async (e) => {
     setPickup(e.target.value);
@@ -56,6 +63,7 @@ function Home() {
       console.error("Error fetching destination suggestions:", err);
     }
   };
+
   const handleDestinationChange = async (e) => {
     setDestination(e.target.value);
     try {
@@ -108,7 +116,7 @@ function Home() {
         },
       }
     );
-    console.log(response)
+    console.log(response);
   }
 
   useGSAP(
@@ -117,13 +125,13 @@ function Home() {
         gsap.to(vehicleFoundRef.current, {
           transform: "translateY(0%)",
           opacity: "1",
-          bottom:'0'
+          bottom: "0",
         });
       } else {
         gsap.to(vehicleFoundRef.current, {
           transform: "translateY(100%)",
           opacity: "0",
-          bottom:'[-100%]'
+          bottom: "[-100%]",
         });
       }
     },
@@ -199,13 +207,13 @@ function Home() {
         gsap.to(confirmRidePanelRef.current, {
           transform: "translateY(0%)",
           opacity: "1",
-          bottom:'0',
+          bottom: "0",
         });
       } else {
         gsap.to(confirmRidePanelRef.current, {
           transform: "translateY(100%)",
           opacity: "0",
-          bottom:'[-100%]'
+          bottom: "[-100%]",
         });
       }
     },

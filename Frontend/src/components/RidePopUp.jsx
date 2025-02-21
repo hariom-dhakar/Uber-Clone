@@ -19,7 +19,7 @@ const RidePopUp = (props) => {
           src="https://preview.redd.it/aishwarya-rai-through-the-years-in-kollywood-v0-2fjgcwl14bfd1.jpg?width=540&format=pjpg&auto=webp&s=9cde9bfad5a97c7f361280eb7ade4804593c5b68"
           alt=""
           />
-        <h2 className="text-lg font-medium">Aishwarya</h2>
+        <h2 className="text-lg font-medium">{props.ride?.user.fullname.firstname}{" "}{props.ride?.user.fullname.lastname}</h2>
           </div>
         <h5 className="text-lg font-semibold">2.2km</h5>
       </div>
@@ -29,7 +29,7 @@ const RidePopUp = (props) => {
             <i className="text-lg ri-map-pin-fill"></i>
             <div>
               <h3 className="text-lg font-bold">562/11-A</h3>
-              <p className="text-gray-600">Bandra,Mumbai</p>
+              <p className="text-gray-600">{props.ride?.pickup}</p>
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@ const RidePopUp = (props) => {
             <i className="text-lg ri-map-pin-range-fill"></i>
             <div>
               <h3 className="text-lg font-bold">125-C</h3>
-              <p className="text-gray-600">Thane,Mumbai</p>
+              <p className="text-gray-600">{props.ride?.destination}</p>
             </div>
           </div>
         </div>
@@ -47,7 +47,7 @@ const RidePopUp = (props) => {
           <div className="flex  items-center gap-5">
             <i className="text-lg ri-currency-line"></i>
             <div>
-              <h3 className="text-lg font-bold">₹187.80</h3>
+              <h3 className="text-lg font-bold">₹{props.ride?.fare}</h3>
               <p className="text-gray-600">cash</p>
             </div>
           </div>
