@@ -41,11 +41,7 @@ module.exports.authCaptain = async (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.decode(token, { complete: true });
-  
-    if (!decoded) {
-      return res.status(401).json({ message: "Unauthorized: Invalid token format" });
-    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const captain = await captainModel.findById(decoded._id);
     req.captain = captain;
     return next();
