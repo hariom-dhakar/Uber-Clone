@@ -1,12 +1,8 @@
-import React, { useContext } from 'react'
-import { CaptainDataContext } from '../context/CaptainContext'
+import React, {useState,useEffect, useContext } from "react";
+import { CaptainDataContext } from "../context/CaptainContext";
 
-const CaptainDetails = () => {
-    const { captain } = useContext(CaptainDataContext)
-    console.log(captain)
-    if (!captain || Object.keys(captain).length === 0) {
-        return <p className="text-center text-gray-600">No Captain Data Available</p>;
-      }
+function CaptainDetails() {
+  const { captain } = useContext(CaptainDataContext);  
     return (
         <div>
             <div className="flex items-center justify-between">

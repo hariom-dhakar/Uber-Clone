@@ -59,15 +59,16 @@ module.exports.loginCaptain = async (req, res, next) => {
 };
 
 module.exports.getCaptainProfile = async (req, res, next) => {
-  res.status(200).json(req.captain);
+  res.status(200).json({ captain: req.captain });
 };
 
 module.exports.logoutCaptain = async (req, res, next) => {
   try {
-    const token = req.cookies?.token || req.headers?.authorization?.split(" ")[1];
-    
+    const token =
+      req.cookies?.token || req.headers?.authorization?.split(" ")[1];
+
     if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
+      return res.status(401).json({ message: "No token provided" });
     }
 
     await blackListTokenModel.create({ token });

@@ -1,48 +1,41 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useCaptainContext } from "../context/CaptainContext";
+import { CaptainDataContext } from "../context/CaptainContext";
 
 const CaptainLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  
+  const [ email, setEmail ] = useState('')
+  const [ password, setPassword ] = useState('')
 
-  const { setCaptain } = useCaptainContext();
-  const navigate = useNavigate();
+  const { captain, setCaptain } = React.useContext(CaptainDataContext)
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    // Check if user is already logged in
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/captains-home");
-    }
-  }, [navigate]);
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const captainData = {
+    const captain = {
       email: email,
-      password,
-    };
-
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/captains/login`,
-      captainData
-    );
-
-    if (response.status === 200) {
-      const data = response.data;
-
-      console.log(data.captain);
-      setCaptain(data.captain);
-      localStorage.setItem("token", data.token);
-      navigate("/captains-home");
+      password
     }
 
-    setEmail("");
-    setPassword("");
-  };
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain)
+
+    if (response.status === 200) {
+      const data = response.data
+
+      setCaptain(data.captain)
+      localStorage.setItem('token', data.token)
+      navigate('/captains-home')
+
+    }
+
+    setEmail('')
+    setPassword('')
+  }
+
   return (
     <div className="p-7 h-screen flex flex-col justify-between">
       <div>

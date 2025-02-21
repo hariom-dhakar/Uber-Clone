@@ -27,23 +27,31 @@ module.exports.authUser = async (req, res, next) => {
 };
 
 module.exports.authCaptain = async (req, res, next) => {
-  const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
+  const authHeader = req.headers.authorization;
+  const token = (req.cookies.token || (authHeader && authHeader.startsWith("Bearer ") ? authHeader.split(" ")[1] : null))?.trim();
+
   if (!token) {
-    return res.status(401).json({ message: "Unauthorization" });
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
-  const isBlackListed = await blackListTokenModel.findOne({ token: token });
+  const isBlacklisted = await blackListTokenModel.findOne({ token: token });
 
-  if (isBlackListed) {
-    return res.status(401).json({ message: "Unauthorization" });
+  if (isBlacklisted) {
+    return res.status(401).json({ message: "Unauthorized" });
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.decode(token, { complete: true });
+  
+    if (!decoded) {
+      return res.status(401).json({ message: "Unauthorized: Invalid token format" });
+    }
     const captain = await captainModel.findById(decoded._id);
     req.captain = captain;
     return next();
   } catch (err) {
-    return res.status(401).json({ message: "Unauthorization" });
+    console.log(err);
+
+    res.status(401).json({ message: "Unauthorized" });
   }
 };
