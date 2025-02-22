@@ -18,10 +18,10 @@ const WaitingForDriver = (props) => {
           alt=""
         />
         <div className="text-right">
-          <h2 className="text-lg font-medium ">Hariom</h2>
-          <h4 className="text-xl font-semibold -mt-1 -mb-1">RJ 06 SD 9992</h4>
+          <h2 className="text-lg font-medium ">{props.ride?.captain?.fullname.firstname+" "+props.ride?.captain?.fullname.lastname}</h2>
+          <h4 className="text-xl font-semibold -mt-1 -mb-1">{props.ride?.captain?.vehicle.plate}</h4>
           <p className="text-sm text-gray-600">Alto 800</p>
-          <h1 className='text-lg font-semibold'>  {props.ride?.otp} </h1>
+          <h1 className='text-lg font-semibold'>OTP: {props.ride?.otp} </h1>
         </div>
       </div>
       <div className="flex justify-between flex-col items-center">

@@ -12,6 +12,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { SocketContext } from "../context/SocketContext";
 import { UserDataContext } from "../context/UserContext";
+import LiveTracking from "../components/LiveTracking";
 
 function Home() {
   const [pickup, setPickup] = useState("");
@@ -35,16 +36,27 @@ function Home() {
   const [activeField, setActiveField] = useState(null);
   const [fare, setFare] = useState({});
   const [vehicleType, setVehicleType] = useState(null);
-  const [ride, setRide] = useState(null);
+  const [ride, setRide] = useState({});
 
   const { socket } = useContext(SocketContext);
   const { user } = useContext(UserDataContext);
 
   const navigate = useNavigate();
-  console.log(user);
   useEffect(() => {
     socket.emit("join", { userType: "user", userId: user._id });
   }, [user]);
+
+  socket.on('ride-confirmed',ride=>{
+    setRide(ride)
+    setVehicleFound(false)
+    setWaitingDriver(true)
+  })
+
+  socket.on('ride-started',(ride)=>{
+      setWaitingDriver(false);
+      console.log(ride)
+      navigate("/riding",{state:{ride}});
+  })
 
   const handlePickupChange = async (e) => {
     setPickup(e.target.value);
@@ -101,7 +113,6 @@ function Home() {
     );
     setFare(response.data);
   }
-
   async function createRide() {
     const response = await axios.post(
       `${import.meta.env.VITE_BASE_URL}/rides/create`,
@@ -116,7 +127,7 @@ function Home() {
         },
       }
     );
-    console.log(response);
+    setRide(response.data)
   }
 
   useGSAP(
@@ -228,11 +239,7 @@ function Home() {
         alt=""
       />
       <div className="h-screen w-screen">
-        <img
-          className="h-full w-full object-cover"
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt=""
-        />
+        <LiveTracking />
       </div>
       <div className="flex flex-col justify-end absolute h-screen top-0 w-full">
         <div className="h-[30%] pt-5 pl-5 pr-5 pb-1 relative bg-white">
@@ -335,7 +342,7 @@ function Home() {
           createRide={createRide}
           pickup={pickup}
           destination={destination}
-          fare={fare}
+          fare={ride.fare}
           vehicleType={vehicleType}
           setVehicleFound={setVehicleFound}
         />

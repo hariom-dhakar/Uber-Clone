@@ -8,6 +8,7 @@ import ConfirmRidePopUp from "../components/ConfirmRidePopUp";
 import { CaptainDataContext } from "../context/CaptainContext";
 import axios from "axios";
 import { SocketContext } from "../context/SocketContext";
+import LiveTracking from "../components/LiveTracking";
 
 const CaptainHome = () => {
   const [ridePopupPanel, setRidePopupPanel] = useState(false);
@@ -45,8 +46,29 @@ const CaptainHome = () => {
 
   socket.on("new-ride", (data) => {
     setRide(data);
-    setRidePopupPanel(true)
+    setRidePopupPanel(true);
   });
+
+  const token = localStorage.getItem('token')
+  async function confirmRide() {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/rides/confirm-ride`,
+      {
+        userId: captain._id,
+        rideId: ride._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.data);
+    
+    setRide(response.data)
+    setRidePopupPanel(false);
+    setConfirmRidePopupPanel(true);
+  }
 
   useGSAP(
     function () {
@@ -94,11 +116,7 @@ const CaptainHome = () => {
         </Link>
       </div>
       <div className="h-3/5">
-        <img
-          className="h-full w-full object-cover"
-          src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif"
-          alt=""
-        />
+      <LiveTracking />
       </div>
       <div className="h-2/5 p-6">
         <CaptainDetails />
@@ -108,16 +126,20 @@ const CaptainHome = () => {
         className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
         <RidePopUp
-         ride={ride}
-         setConfirmRidePopupPanel={setConfirmRidePopupPanel}
-         setRidePopupPanel={setRidePopupPanel} />
+          ride={ride}
+          confirmRide={confirmRide}
+          setConfirmRidePopupPanel={setConfirmRidePopupPanel}
+          setRidePopupPanel={setRidePopupPanel}
+        />
       </div>
       <div
         ref={confirmRidePopupPanelRef}
         className="fixed w-full h-screen z-10 bottom-0 translate-y-full bg-white px-3 py-10 pt-12"
       >
         <ConfirmRidePopUp 
-        setConfirmRidePopupPanel={setConfirmRidePopupPanel}/>
+        ride={ride}
+        setRidePopupPanel={setRidePopupPanel}
+        setConfirmRidePopupPanel={setConfirmRidePopupPanel} />
       </div>
     </div>
   );

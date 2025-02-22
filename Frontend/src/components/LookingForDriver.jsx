@@ -41,7 +41,7 @@ const LookingForDriver = (props) => {
         <div className="flex  items-center gap-5">
         <i className="text-lg ri-currency-line"></i>
         <div>
-          <h3 className="text-lg font-bold">₹{props.fare[props.vehicleType]}</h3>
+          <h3 className="text-lg font-bold">₹{props.fare}</h3>
           <p className="text-gray-600">cash</p>
         </div>
         </div>

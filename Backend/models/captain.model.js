@@ -73,7 +73,7 @@ captainSchema.methods.generateAuthToken = function () {
 };
 
 captainSchema.methods.comparePassword = async function (password) {
-  const captain = await this.model("captain").findById(this._id).select("+password");
+  const captain = await this.model("Captain").findById(this._id).select("+password");
   return await bcrypt.compare(password, captain.password);
 };
 
@@ -81,6 +81,6 @@ captainSchema.statics.hashPassword = async (password) => {
   return await bcrypt.hash(password, 10);
 };
 
-const captainModel = mongoose.model("captain", captainSchema);
+const captainModel = mongoose.model("Captain", captainSchema);
 
 module.exports = captainModel;
