@@ -232,7 +232,7 @@ function Home() {
   );
 
   return (
-    <div className="h-screen relative w-full overflow-hidden">
+    <div className="h-screen w-screen relative flex flex-col items-center justify-center bg-gray-100">
       <img
         className="w-16 absolute left-5 top-5"
         src="https://download.logo.wine/logo/Uber/Uber-Logo.wine.png"
@@ -242,7 +242,7 @@ function Home() {
         <LiveTracking />
       </div>
       <div className="flex flex-col justify-end absolute h-screen top-0 w-full">
-        <div className="h-[30%] pt-5 pl-5 pr-5 pb-1 relative bg-white">
+        <div className="h-[30%] shadow-xl pt-5 pl-5 pr-5 pb-1 relative bg-white">
           <h5
             ref={panelCloseRef}
             onClick={() => {
@@ -252,16 +252,17 @@ function Home() {
           >
             <i className="ri-arrow-down-wide-line"></i>
           </h5>
-          <h4 className="text-2xl font-semibold">Find Trip</h4>
-          <form
+          <h4 className="text-2xl font-bold text-gray-800">Find Trip</h4>
+          <form className="mt-4 space-y-2"
             action=""
             onSubmit={(e) => {
               submitHandler(e);
             }}
           >
-            <div className="line absolute h-16 w-1 top-[45%] left-10 bg-gray-600 rounded-full"></div>
+            {/* <div className="line absolute h-16 w-1 top-[45%] left-10 bg-gray-600 rounded-full"></div> */}
+            <div className="relative">
             <input
-              className="bg-[#eee] px-12 py-2 text-base rounded-lg w-full mt-5"
+              className="bg-gray-200 px-10 py-2 w-full rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               value={pickup}
               type="text"
               onClick={() => {
@@ -269,10 +270,13 @@ function Home() {
                 setPanel(true);
               }}
               onChange={handlePickupChange}
-              placeholder="add a pickup location"
+              placeholder="Add a pickup location"
             />
+            <i className="ri-map-pin-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600"></i>
+            </div>
+            <div className="relative">
             <input
-              className="bg-[#eee] px-12 py-2 text-base rounded-lg w-full mt-3"
+              className="bg-gray-200 px-10 py-2 w-full rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
               value={destination}
               type="text"
               onClick={() => {
@@ -282,10 +286,12 @@ function Home() {
               onChange={handleDestinationChange}
               placeholder="enter your destination"
             />
+            <i className="ri-flag-line absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-600"></i>
+            </div>
           </form>
           <button
             onClick={findTrip}
-            className="bg-black text-white px-4 py-2 rounded-lg mt-3 w-full"
+            className="mt-4 w-full py-2 bg-black text-white rounded-lg text-lg font-medium"
           >
             Find Trip
           </button>

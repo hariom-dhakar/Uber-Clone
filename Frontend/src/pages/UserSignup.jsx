@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import {UserDataContext} from "../context/UserContext";
+import { UserDataContext } from "../context/UserContext";
 
 function UserSignup() {
   const [email, setEmail] = useState("");
@@ -30,8 +30,8 @@ function UserSignup() {
     if (response.status === 201) {
       const data = response.data;
       setUser(data.user);
-      localStorage.setItem('token',data.token)
-      navigate('/home')
+      localStorage.setItem("token", data.token);
+      navigate("/home");
     }
     setEmail("");
     setPassword("");
@@ -39,45 +39,47 @@ function UserSignup() {
     setLastname("");
   };
   return (
-    <>
-      <div className="p-7 h-screen flex flex-col justify-between ">
-        <div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+        <div className="flex flex-col items-center mb-6">
           <img
-            className="w-18 mb-8"
+            className="w-16"
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYQy-OIkA6In0fTvVwZADPmFFibjmszu2A0g&s"
-            alt=""
+            alt="User Icon"
           />
-          <form
-            action=""
-            onSubmit={(e) => {
-              submitHandler(e);
-            }}
-          >
-            <h3 className="text-lg font-medium mb-2">What's your name</h3>
-            <div className="flex gap-4">
-              <input
-                value={firstname}
-                onChange={(e) => {
-                  e.preventDefault;
-                  setFirstname(e.target.value);
-                }}
-                required
-                className="bg-[#eeeeee] rounded w-1/2 px-4 py-2 text-base placeholder:text-base mb-4"
-                type="text"
-                placeholder="First name"
-              />
-              <input
-                value={lastname}
-                onChange={(e) => {
-                  e.preventDefault;
-                  setLastname(e.target.value);
-                }}
-                className="bg-[#eeeeee] rounded w-1/2 px-4 py-2 text-base placeholder:text-base mb-4"
-                type="text"
-                placeholder="Last name"
-              />
-            </div>
-            <h3 className="text-lg font-medium mb-2">What's your email</h3>
+          <h2 className="text-xl font-bold mt-2">Create Your Account</h2>
+        </div>
+        <form
+          className="space-y-4"
+          action=""
+          onSubmit={(e) => {
+            submitHandler(e);
+          }}
+        >
+          <div className="flex gap-4 mb-4">
+            <input
+              value={firstname}
+              onChange={(e) => {
+                e.preventDefault;
+                setFirstname(e.target.value);
+              }}
+              required
+              className="bg-gray-200 w-1/2  rounded-lg px-4 py-2 border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              type="text"
+              placeholder="First name"
+            />
+            <input
+              value={lastname}
+              onChange={(e) => {
+                e.preventDefault;
+                setLastname(e.target.value);
+              }}
+              className="bg-gray-200 w-1/2 rounded-lg px-4 py-2 border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              type="text"
+              placeholder="Last name"
+            />
+          </div>
+          <div className="mb-4">
             <input
               value={email}
               onChange={(e) => {
@@ -85,42 +87,41 @@ function UserSignup() {
                 setEmail(e.target.value);
               }}
               required
-              className="bg-[#eeeeee] rounded px-4 py-2  w-full text-base placeholder:text-base mb-4"
+              className="bg-gray-200 w-full rounded-lg px-4 py-2 border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               type="email"
               placeholder="email@example.com"
             />
-            <h3 className="text-lg mb-2 font-medium">Enter Password</h3>
+          </div>
+          <div className="mb-4">
             <input
               required
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              className="bg-[#eeeeee] rounded px-4 py-2  w-full text-base placeholder:text-base mb-4"
+              className="bg-gray-200 w-full rounded-lg px-4 py-2 border border-gray-300 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               type="password"
               placeholder="Password"
             />
-            <button className="bg-black font-semibold text-white rounded px-4 py-2 w-full text-lg mb-4">
-              Create Account
-            </button>
-          </form>
-          <p className="mb-5 text-center">
-            Already have an account? &nbsp;
-            <Link to="/login" className="text-blue-400">
-              Login here
-            </Link>
-          </p>
-        </div>
-        <div>
-          <Link
-            to="/captains-login"
-            className="flex justify-center items-center bg-[#ffca61] font-semibold text-white rounded px-4 py-2 w-full text-lg  mb-4"
-          >
-            Sign in as Captain
+          </div>
+          <button className="bg-blue-500 hover:bg-blue-700 transition text-white font-semibold rounded-lg px-4 py-2 w-full text-lg">
+            Create Account
+          </button>
+        </form>
+        <p className="text-center mt-4">
+          Already have an account?{" "}
+          <Link to="/login" className="text-blue-600 font-semibold">
+            Login here
           </Link>
-        </div>
+        </p>
+        <Link
+          to="/captains-login"
+          className="mt-6 flex justify-center items-center bg-yellow-500 hover:bg-yellow-600 transition text-white font-semibold rounded-lg px-4 py-2 w-full text-lg"
+        >
+          Sign in as Captain
+        </Link>
       </div>
-    </>
+    </div>
   );
 }
 
